@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from backend.core.config import settings
 
-DATABASE_URL = "sqlite:///./story.db"
+DATABASE_URL = settings.database_url
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -14,3 +15,6 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def create_tables():
+    Base.metadata.create_all(bind=engine)
