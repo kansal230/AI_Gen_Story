@@ -1,20 +1,26 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from datetime import datetime
 
 
-class JobCreate(BaseModel):
-    title: str = Field(..., min_length=1)
-    status: Optional[str] = "pending"
-    prompt: str = Field(..., min_length=1)
-    result: Optional[str] = None
+class StoryJobBase(BaseModel):
+    theme: str
+    
 
 
-class JobRead(BaseModel):
-    id: int
-    title: str
+class StoryJobResponse(BaseModel):
+    job_id: int
     status: str
-    prompt: str
-    result: Optional[str] = None
+    created_at: datetime
+    completed_at: Optional[datetime] = None
+    story_id: Optional[int] = None
+    error: Optional[str] = None
 
     class Config:
         from_attributes = True
+
+class StoryJobCreate(StoryJobBase):
+    pass
+
+class CreateStoryJobRequest(StoryJobBase):
+    pass
